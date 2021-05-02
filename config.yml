@@ -1,0 +1,2 @@
+listen: 0.0.0.0:8080
+dsn: "root:password@tcp(127.0.0.1:3306)/searcher?charset=utf8&parseTime=True&loc=Local"

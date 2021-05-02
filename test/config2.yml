@@ -1,0 +1,2 @@
+listen: 127.0.0.1:3000
+dsn: "test:test@tcp(127.0.0.1:3306)/searcher?charset=utf8&parseTime=True&loc=Local"

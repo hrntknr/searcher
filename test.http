@@ -1,0 +1,13 @@
+POST http://localhost:8080/regist HTTP/1.1
+Content-Type: application/json
+
+{
+  "uri": "test",
+  "body": "すもももももももものうち。猿も木から落ちる。桃栗三年柿八年"
+}
+###
+GET http://localhost:8080/search?k=%E3%81%99%E3%82%82%E3%82%82 HTTP/1.1
+###
+GET http://localhost:8080/search?k=%E3%82%82%E3%82%82 HTTP/1.1
+###
+GET http://localhost:8080/search?k=%E3%81%99%E3%82%82%E3%82%82%E3%80%80%E3%82%82%E3%82%82 HTTP/1.1
