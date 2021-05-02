@@ -19,13 +19,13 @@ func TestAnalyze(t *testing.T) {
 
 	if diff := cmp.Diff(
 		[][]string{{
-			"すもも",
-			"も",
-			"もも",
-			"も",
-			"もも",
-			"の",
-			"うち",
+			"スモモ",
+			"モ",
+			"モモ",
+			"モ",
+			"モモ",
+			"ノ",
+			"ウチ",
 		}},
 		actual,
 	); diff != "" {
