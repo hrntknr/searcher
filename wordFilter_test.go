@@ -8,7 +8,7 @@ import (
 
 func TestLowercaseFilter(t *testing.T) {
 	filter, _ := newLowercaseFilter()
-	actual := filter.filter([][]string{{"AmaZON", "pRiME"}})
+	actual := filter.Filter([][]string{{"AmaZON", "pRiME"}})
 
 	diff := cmp.Diff(
 		[][]string{{"amazon", "prime"}},
@@ -21,7 +21,7 @@ func TestLowercaseFilter(t *testing.T) {
 
 func TestStopWordFilter(t *testing.T) {
 	filter, _ := newStopWordFilter([]string{"i", "a"})
-	actual := filter.filter([][]string{{"i", "have", "a", "pen"}})
+	actual := filter.Filter([][]string{{"i", "have", "a", "pen"}})
 
 	diff := cmp.Diff(
 		[][]string{{"have", "pen"}},
@@ -34,7 +34,7 @@ func TestStopWordFilter(t *testing.T) {
 
 func TestStemmerFilter(t *testing.T) {
 	filter, _ := newStemmerFilter()
-	actual := filter.filter([][]string{{"it", "was", "raining"}})
+	actual := filter.Filter([][]string{{"it", "was", "raining"}})
 
 	diff := cmp.Diff(
 		[][]string{{"it", "was", "rain"}},

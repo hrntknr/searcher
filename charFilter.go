@@ -2,8 +2,8 @@ package main
 
 import "strings"
 
-type charFilter interface {
-	filter([]string) []string
+type CharFilter interface {
+	Filter([]string) []string
 }
 
 func newMappingCharFilter(mapper map[string]string) (*mappingCharFilter, error) {
@@ -16,7 +16,7 @@ type mappingCharFilter struct {
 	mapper map[string]string
 }
 
-func (f *mappingCharFilter) filter(str []string) []string {
+func (f *mappingCharFilter) Filter(str []string) []string {
 	result := make([]string, len(str))
 	for i, s := range str {
 		result[i] = s

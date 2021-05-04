@@ -8,7 +8,7 @@ import (
 
 func TestSentenceSplitter(t *testing.T) {
 	splitter, _ := newSentenceSplitter()
-	actual, _ := splitter.split(`人魚は、南の方の海にばかり棲んでいるのではあ
+	actual, _ := splitter.Split(`人魚は、南の方の海にばかり棲んでいるのではあ
 	りません。北の海にも棲んでいたのであります。
 	　北方の海うみの色は、青うございました。ある
 	とき、岩の上に、女の人魚があがって、あたりの景

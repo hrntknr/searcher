@@ -7,7 +7,10 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
+	"github.com/hrntknr/searcher/mock"
+	"github.com/hrntknr/searcher/types"
 )
 
 func init() {
@@ -16,8 +19,14 @@ func init() {
 }
 
 func TestControllerRegist(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	serviceMock := mock.NewMockService(ctrl)
+	gomock.InOrder(
+		serviceMock.EXPECT().Regist("test", "すもももももももものうち"),
+	)
+
 	config, _ := loadConfig("config", []string{"test"})
-	serviceMock := newServiceMock()
 	controller, _ := newController(config, serviceMock)
 	w := httptest.NewRecorder()
 
@@ -30,18 +39,23 @@ func TestControllerRegist(t *testing.T) {
 	); diff != "" {
 		t.Errorf(diff)
 	}
-
-	if diff := cmp.Diff(
-		[][]string{{"test", "すもももももももものうち"}},
-		serviceMock.registArgs,
-	); diff != "" {
-		t.Errorf(diff)
-	}
 }
 
 func TestControllerSearch(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	serviceMock := mock.NewMockService(ctrl)
+	gomock.InOrder(
+		serviceMock.EXPECT().Search("すもも", uint(11), uint(12)).Return(
+			[]types.SearchResult{{
+				Uri:       "uri",
+				Score:     10,
+				Sentences: []string{"すもももももももものうち"},
+			}}, nil,
+		),
+	)
+
 	config, _ := loadConfig("config", []string{"test"})
-	serviceMock := newServiceMock()
 	controller, _ := newController(config, serviceMock)
 	w := httptest.NewRecorder()
 
@@ -61,45 +75,4 @@ func TestControllerSearch(t *testing.T) {
 	); diff != "" {
 		t.Errorf(diff)
 	}
-
-	if diff := cmp.Diff(
-		[]controllerSearchArgs{{Keyword: "すもも", Count: 12, Offset: 11}},
-		serviceMock.searchArgs,
-	); diff != "" {
-		t.Errorf(diff)
-	}
-}
-
-func newServiceMock() *serviceMock {
-	return &serviceMock{
-		registArgs: [][]string{},
-		searchArgs: []controllerSearchArgs{},
-	}
-}
-
-type serviceMock struct {
-	registArgs [][]string
-	searchArgs []controllerSearchArgs
-}
-
-func (s *serviceMock) regist(uri string, body string) error {
-	s.registArgs = append(s.registArgs, []string{uri, body})
-	return nil
-}
-
-func (s *serviceMock) search(keyword string, offset, count uint) ([]searchResult, error) {
-	s.searchArgs = append(s.searchArgs, controllerSearchArgs{Keyword: keyword, Offset: offset, Count: count})
-	return []searchResult{
-		{
-			Uri:       "uri",
-			Score:     10,
-			Sentences: []string{"すもももももももものうち"},
-		},
-	}, nil
-}
-
-type controllerSearchArgs struct {
-	Keyword string
-	Offset  uint
-	Count   uint
 }

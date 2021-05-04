@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func newController(config *config, service service) (*controller, error) {
+func newController(config *config, service Service) (*controller, error) {
 	router := gin.New()
 
 	router.POST("/regist", func(c *gin.Context) {
@@ -17,7 +17,7 @@ func newController(config *config, service service) (*controller, error) {
 			return
 		}
 
-		if err := service.regist(body.Uri, body.Body); err != nil {
+		if err := service.Regist(body.Uri, body.Body); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -47,7 +47,7 @@ func newController(config *config, service service) (*controller, error) {
 			}
 			offset = uint(_offset)
 		}
-		result, err := service.search(c.Query("k"), offset, count)
+		result, err := service.Search(c.Query("k"), offset, count)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

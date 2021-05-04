@@ -5,8 +5,8 @@ import (
 	kagome "github.com/ikawaha/kagome/v2/tokenizer"
 )
 
-type tokenizer interface {
-	analyze(text []string) [][]string
+type Tokenizer interface {
+	Analyze(text []string) [][]string
 }
 
 func newTokenizer() (*tokenizerImpl, error) {
@@ -24,7 +24,7 @@ type tokenizerImpl struct {
 	kagome *kagome.Tokenizer
 }
 
-func (t *tokenizerImpl) analyze(text []string) [][]string {
+func (t *tokenizerImpl) Analyze(text []string) [][]string {
 	result := make([][]string, len(text))
 	for i, text := range text {
 		tokens := t.kagome.Analyze(text, kagome.Search)

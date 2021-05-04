@@ -8,7 +8,7 @@ import (
 
 func TestMappingCharFilter(t *testing.T) {
 	filter, _ := newMappingCharFilter(map[string]string{":)": "happy", ":(": "sad"})
-	actual := filter.filter([]string{":), :("})
+	actual := filter.Filter([]string{":), :("})
 
 	diff := cmp.Diff(
 		[]string{"happy, sad"},

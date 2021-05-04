@@ -15,7 +15,7 @@ func init() {
 func TestAnalyze(t *testing.T) {
 	tokenizer, _ := newTokenizer()
 
-	actual := tokenizer.analyze([]string{"すもももももももものうち"})
+	actual := tokenizer.Analyze([]string{"すもももももももものうち"})
 
 	if diff := cmp.Diff(
 		[][]string{{
@@ -36,7 +36,7 @@ func TestAnalyze(t *testing.T) {
 func TestAnalyzeWhitespace(t *testing.T) {
 	tokenizer, _ := newTokenizer()
 
-	actual := tokenizer.analyze([]string{" "})
+	actual := tokenizer.Analyze([]string{" "})
 
 	if diff := cmp.Diff(
 		[][]string{{}},
@@ -49,7 +49,7 @@ func TestAnalyzeWhitespace(t *testing.T) {
 func TestAnalyzeSymbol(t *testing.T) {
 	tokenizer, _ := newTokenizer()
 
-	actual := tokenizer.analyze([]string{"！？"})
+	actual := tokenizer.Analyze([]string{"！？"})
 
 	if diff := cmp.Diff(
 		[][]string{{

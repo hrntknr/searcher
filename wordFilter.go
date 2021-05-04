@@ -6,8 +6,8 @@ import (
 	"github.com/kljensen/snowball/english"
 )
 
-type wordFilter interface {
-	filter([][]string) [][]string
+type WordFilter interface {
+	Filter([][]string) [][]string
 }
 
 func newLowercaseFilter() (*lowercaseFilter, error) {
@@ -17,7 +17,7 @@ func newLowercaseFilter() (*lowercaseFilter, error) {
 type lowercaseFilter struct {
 }
 
-func (f *lowercaseFilter) filter(tokens [][]string) [][]string {
+func (f *lowercaseFilter) Filter(tokens [][]string) [][]string {
 	newTokens := make([][]string, len(tokens))
 	for i, token := range tokens {
 		newTokens[i] = make([]string, len(tokens[i]))
@@ -42,7 +42,7 @@ type stopWordFilter struct {
 	stopWords map[string]struct{}
 }
 
-func (f *stopWordFilter) filter(tokens [][]string) [][]string {
+func (f *stopWordFilter) Filter(tokens [][]string) [][]string {
 	newTokens := make([][]string, len(tokens))
 	for i, token := range tokens {
 		newTokens[i] = []string{}
@@ -63,7 +63,7 @@ func newStemmerFilter() (*stemmerFilter, error) {
 type stemmerFilter struct {
 }
 
-func (f *stemmerFilter) filter(tokens [][]string) [][]string {
+func (f *stemmerFilter) Filter(tokens [][]string) [][]string {
 	newTokens := make([][]string, len(tokens))
 	for i, token := range tokens {
 		newTokens[i] = make([]string, len(tokens[i]))

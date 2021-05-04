@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"encoding/json"
 
+	"github.com/hrntknr/searcher/types"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -49,7 +50,7 @@ func NewSearcher() (*Sercher, error) {
 	if err := json.Unmarshal([]byte(mappingCharData), &mappingChar); err != nil {
 		return nil, err
 	}
-	mappingCharFilter, err := newMappingCharFilter(mappingChar)
+	MappingCharFilter, err := newMappingCharFilter(mappingChar)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +77,14 @@ func NewSearcher() (*Sercher, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := sql.AutoMigrate(&invertedIndex{}, &posting{}, &sentence{}, &tokenPosition{}); err != nil {
+	sqlDB, err := sql.DB()
+	if err != nil {
+		return nil, err
+	}
+	sqlDB.SetMaxOpenConns(100)
+	sqlDB.SetMaxIdleConns(0)
+
+	if err := sql.AutoMigrate(&types.Document{}, &types.Sentence{}, &types.Posting{}, &types.Token{}); err != nil {
 		return nil, err
 	}
 	db, err := newDb(sql)
@@ -87,8 +95,8 @@ func NewSearcher() (*Sercher, error) {
 	service, err := newService(
 		sentenceSplitter,
 		tokenizer,
-		[]charFilter{mappingCharFilter},
-		[]wordFilter{lowercaseFilter, stopWordFilter, stemmerFilter},
+		[]CharFilter{MappingCharFilter},
+		[]WordFilter{lowercaseFilter, stopWordFilter, stemmerFilter},
 		db,
 	)
 	if err != nil {
